@@ -1,0 +1,217 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Weather API",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/api/weather": {
+        "get": {
+          "summary": "Get Weather Data",
+          "parameters": [
+            {
+              "name": "station_id",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "start_date",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            {
+              "name": "end_date",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "format": "date"
+              }
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            {
+              "name": "per_page",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of weather data records",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/WeatherData"
+                        }
+                      },
+                      "total": {
+                        "type": "integer"
+                      },
+                      "pages": {
+                        "type": "integer"
+                      },
+                      "current_page": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/weather/stats": {
+        "get": {
+          "summary": "Get Weather Statistics",
+          "parameters": [
+            {
+              "name": "station_id",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "year",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer"
+              }
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            {
+              "name": "per_page",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of weather statistics",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "data": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/WeatherStats"
+                        }
+                      },
+                      "total": {
+                        "type": "integer"
+                      },
+                      "pages": {
+                        "type": "integer"
+                      },
+                      "current_page": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "WeatherData": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "station_id": {
+              "type": "string"
+            },
+            "date": {
+              "type": "string",
+              "format": "date"
+            },
+            "max_temp": {
+              "type": "number",
+              "format": "float"
+            },
+            "min_temp": {
+              "type": "number",
+              "format": "float"
+            },
+            "precipitation": {
+              "type": "number",
+              "format": "float"
+            }
+          }
+        },
+        "WeatherStats": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "station_id": {
+              "type": "string"
+            },
+            "year": {
+              "type": "integer"
+            },
+            "avg_max_temp": {
+              "type": "number",
+              "format": "float"
+            },
+            "avg_min_temp": {
+              "type": "number",
+              "format": "float"
+            },
+            "total_precip": {
+              "type": "number",
+              "format": "float"
+            }
+          }
+        }
+      }
+    }
+  }
+  
