@@ -12,6 +12,19 @@ The weather data files contain the following records:
 - Precipitation in tenths of a millimeter.
 - Missing values are indicated by -9999.
 
+### Data Model
+We use a relational database PostgreSQL to store the weather data. Below is the SQL DDL for the weather_data table:
+```
+CREATE TABLE weather_data (
+    id SERIAL PRIMARY KEY,
+    station_id VARCHAR(255) NOT NULL,
+    date DATE NOT NULL,
+    max_temp INTEGER,
+    min_temp INTEGER,
+    precipitation INTEGER,
+    UNIQUE (station_id, date)
+);
+```
 
 ## Problem 2 - Ingestion
 To ingest the weather data from the provided files, use the script located at:
@@ -19,38 +32,40 @@ To ingest the weather data from the provided files, use the script located at:
 ``` /src/ingest_weather_data.py ```
 
 Ingestion Process
-Reads the weather data files from the wx_data directory.
-Skips any data that is already present in the database (checks for duplicates).
-Logs start and end times, and the number of records ingested.
-To run the ingestion script:
+- Reads the weather data files from the wx_data directory.
+- Skips any data that is already present in the database (checks for duplicates).
+- Logs start and end times, and the number of records ingested.
 
+To run the ingestion script:
 ``` python src/ingest_weather_data.py  ```
 
-## Problem 2 - Ingestion
+## Problem 3 - Data Analysis
 To ingest the weather data from the provided files, use the script located at:
 
-```/src/ingest_weather_data.py```
+- Average Maximum Temperature (in degrees Celsius)
+- Average Minimum Temperature (in degrees Celsius)
+- Total Precipitation (in centimeters)
 
-Ingestion Process
-Reads the weather data files from the wx_data directory.
-Skips any data that is already present in the database (checks for duplicates).
-Logs start and end times, and the number of records ingested.
-To run the ingestion script:
-
-``` python src/ingest_weather_data.py ```
-
-## Problem 3 - Data Analysis
-For every weather station and year, the following statistics are calculated:
-
-Average Maximum Temperature (in degrees Celsius)
-Average Minimum Temperature (in degrees Celsius)
-Total Precipitation (in centimeters)
 Missing values are ignored during calculations.
 
+### New Data Model for Statistics
+
+```
+CREATE TABLE weather_statistics (
+    id SERIAL PRIMARY KEY,
+    station_id VARCHAR(255) NOT NULL,
+    year INTEGER NOT NULL,
+    avg_max_temp FLOAT,
+    avg_min_temp FLOAT,
+    total_precipitation FLOAT,
+    UNIQUE (station_id, year)
+);
+
+```
 Script for Calculating Statistics
 The script for calculating and storing weather statistics is located at:
 
-``` /src/calculate_weather_stats.py ```
+```/src/ingest_weather_data.py```
 
 Run the script:
 
@@ -80,12 +95,14 @@ Responses are paginated, with 100 records per page by default
 
 ## API Documentation (Swagger/OpenAPI)
 The API documentation is automatically generated using Swagger and can be accessed at:
+```
 /api/docs
-
+```
 The OpenAPI specification is located at:
 
+```
 /src/static/swagger.json
-
+```
 ## Run the API
 To run the API locally, use:
 
@@ -93,7 +110,7 @@ To run the API locally, use:
 
 The API will be available at http://localhost:5000/
 
-## Deployment
+## Deployment (Extra Credit)
 
 ### Cloud Deployment using AWS
 
